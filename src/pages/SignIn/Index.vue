@@ -10,7 +10,9 @@
         class="logo q-mb-lg"
         src="../../../src/assets/instadev-logo.svg"
       />
-      <q-input filled v-model="email" label="E-mail" class="full-width q-mb-md" />
+      <q-form class="full-width" @submit="onSubmit">
+
+      <q-input filled v-model="credential" label="E-mail ou usuário" class="full-width q-mb-md" />
       <q-input filled v-model="password" label="Password" type="password" class="full-width" />
 
       <div class="column items-end full-width">
@@ -18,11 +20,13 @@
       </div>
 
       <q-btn
+        type="submit"
         color="primary"
-        :disable="true"
+        :disable="!credential || !password"
         label="Log in"
         class="sign-in-button full-width q-mt-lg"
       />
+      </q-form>
 
       <div class="flex full-width row items-center justify-center q-mt-xl">
         <q-img class="facebook-icon" src="../../../src/assets/facebook-logo.svg"></q-img>
@@ -58,9 +62,21 @@ export default {
   name: 'SignIn',
   data() {
     return {
-      email: '',
+      credential: '',
       password: '',
     };
+  },
+  methods: {
+    async onSubmit() {
+      const result = await this.$store.dispatch('auth/makeLogin', {
+        credential: this.credential,
+        password: this.password,
+      });
+
+      if (result) {
+        this.$router.push({ path: 'main' });
+      }
+    },
   },
 };
 </script>
