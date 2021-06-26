@@ -4,6 +4,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "editor.tabSize": 2,
   "editor.fontSize": 21,
   "eslint.validate": [
     "javascript",
