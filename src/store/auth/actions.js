@@ -21,7 +21,12 @@ export async function makeLogin({ commit }, body) {
     commit('setToken', data.token);
     return data;
   } catch (error) {
-    console.log(error);
+    vm.$q.notify({
+      type: 'negative',
+      message: 'Verifique as credenciais',
+      position: 'top',
+      icon: 'warning',
+    });
     return false;
   }
 }
