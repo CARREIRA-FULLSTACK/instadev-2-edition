@@ -21,7 +21,7 @@
       </div>
     </q-scroll-area>
 
-    <Posts v-for="item in 10" :key="item"/>
+    <Posts :items="posts"/>
 
     <div class="container-bottom full-width q-pb-lg">
       <q-separator class="full-width q-mb-sm"/>
@@ -42,16 +42,21 @@ export default {
     BottomBar,
     Posts,
   },
+  data() {
+    return {
+      posts: [],
+    };
+  },
   async mounted() {
     await this.loadAllPosts();
   },
   methods: {
     async loadAllPosts() {
       const token = this.$store.getters['auth/getJWT'];
-      const response = await
+      const { data } = await
       this.$store.dispatch('posts/listAllPosts', { token });
-
-      console.log(response);
+      this.posts = data;
+      console.log(data);
     },
   },
 };
