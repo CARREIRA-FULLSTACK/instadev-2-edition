@@ -3,8 +3,7 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: process.env.API_URL,
-  timeout: 1000,
-  headers: { 'X-Custom-Header': 'foobar' },
+  timeout: 15000,
 });
 
 Vue.prototype.$axios = instance;

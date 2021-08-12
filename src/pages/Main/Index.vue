@@ -42,6 +42,18 @@ export default {
     BottomBar,
     Posts,
   },
+  async mounted() {
+    await this.loadAllPosts();
+  },
+  methods: {
+    async loadAllPosts() {
+      const token = this.$store.getters['auth/getJWT'];
+      const response = await
+      this.$store.dispatch('posts/listAllPosts', { token });
+
+      console.log(response);
+    },
+  },
 };
 </script>
 
