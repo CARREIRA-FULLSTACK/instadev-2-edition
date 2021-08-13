@@ -56,7 +56,6 @@ export default {
       const { data } = await
       this.$store.dispatch('posts/listAllPosts', { token });
       this.posts = data;
-      console.log(data);
     },
   },
 };

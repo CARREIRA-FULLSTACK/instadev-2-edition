@@ -116,6 +116,16 @@ export default {
       drawerRight: false,
     };
   },
+  async mounted() {
+    await this.loadProfileData();
+  },
+  methods: {
+    async loadProfileData() {
+      const token = this.$store.getters['auth/getJWT'];
+      const response = await this.$store.dispatch('user/getUserProfile', { token });
+      console.log(response);
+    },
+  },
   components: {
     BottomBar,
     MenuDrawer,
