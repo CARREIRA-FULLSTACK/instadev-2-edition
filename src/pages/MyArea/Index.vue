@@ -16,15 +16,15 @@
       />
       <div class="full-width row items-center justify-center">
         <q-icon name="fas fa-lock" color="black" size="11px" class="q-mr-xs" />
-        <strong>jacob_w</strong>
+        <strong>{{user.user_name}}</strong>
         <q-icon name="fas fa-chevron-down" color="black" size="11px" class="q-ml-xs" />
       </div>
       <div class="row items-center justify-between full-width q-mt-lg">
         <q-avatar size="96px" class="avatar-profile">
-          <img class="avatar" src="https://cdn.quasar.dev/img/avatar.png">
+          <img class="avatar" :src="user.avatar || 'https://static.wikia.nocookie.net/caramella-girls/images/9/99/Blankpfp.png/revision/latest?cb=20190122015011'">
         </q-avatar>
         <div class="column items-center">
-          <strong>54</strong>
+          <strong>{{posts.length}}</strong>
           <span>Posts</span>
         </div>
         <div class="column items-center">
@@ -37,9 +37,12 @@
         </div>
       </div>
       <div class="column q-mt-md">
-        <strong>Jacob West</strong>
-        <span>
-          Digital goodies designer @pixsellz
+        <strong>{{user.name}}</strong>
+        <span v-if="user.bio">
+          {{user.bio}}
+        </span>
+        <span v-else>
+          Adicione uma descrição a sua bio.
         </span>
         <span>
           Everything is designed.
@@ -52,6 +55,7 @@
         class="btn-edit full-width q-my-md"
         text-color="black"
         label="Edit Profile"
+        @click="goTo('profile')"
       />
       <div class="row">
         <div class="column items-center q-mr-md">
@@ -87,10 +91,10 @@
       </q-tabs>
       <div class="row q-mb-xl">
         <q-img
-          v-for="item in 5" :key="item"
+          v-for="item in posts" :key="item.id"
           class="cursor-pointer col-4"
           :ratio="1"
-          src="https://placeimg.com/500/300/nature"
+          :src="item.image"
         />
       </div>
     </div>
@@ -114,16 +118,26 @@ export default {
     return {
       tab: 'grid',
       drawerRight: false,
+      user: {},
+      token: this.$store.getters['auth/getJWT'],
+      posts: [],
     };
   },
   async mounted() {
-    await this.loadProfileData();
+    await this.loadAllPosts();
+    this.loadProfileData();
   },
   methods: {
-    async loadProfileData() {
-      const token = this.$store.getters['auth/getJWT'];
-      const response = await this.$store.dispatch('user/getUserProfile', { token });
-      console.log(response);
+    loadProfileData() {
+      this.user = this.$store.getters['user/getUserData'];
+    },
+    async loadAllPosts() {
+      const { data } = await
+      this.$store.dispatch('posts/listMyPosts', { token: this.token });
+      this.posts = data;
+    },
+    goTo(route) {
+      this.$router.push({ path: route });
     },
   },
   components: {
