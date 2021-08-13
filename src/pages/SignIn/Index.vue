@@ -72,10 +72,14 @@ export default {
         credential: this.credential,
         password: this.password,
       });
+      await this.loadProfileData(result.token);
 
       if (result) {
         this.$router.push({ path: 'main' });
       }
+    },
+    async loadProfileData(token) {
+      await this.$store.dispatch('user/getUserProfile', { token });
     },
   },
 };
