@@ -33,11 +33,18 @@ export async function updateUserProfile({ dispatch }, params) {
 
     dispatch('getUserProfile', { token });
 
+    vm.$q.notify({
+      type: 'positive',
+      message: data.message,
+      position: 'top',
+      icon: 'warning',
+    });
+
     return data;
   } catch (error) {
     vm.$q.notify({
       type: 'negative',
-      message: 'Falha ao listar dados do usuário!',
+      message: 'Falha ao alterar o usuário!',
       position: 'top',
       icon: 'warning',
     });

@@ -81,7 +81,11 @@ export default {
         bio: this.bio,
         gender: this.gender,
       };
-      await this.$store.dispatch('user/updateUserProfile', { token, body });
+      const response = await this.$store.dispatch('user/updateUserProfile', { token, body });
+
+      if (response) {
+        this.$router.push({ path: 'my-area' });
+      }
     },
     loadProfileData() {
       const userData = this.$store.getters['user/getUserData'];
