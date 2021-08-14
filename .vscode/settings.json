@@ -5,7 +5,7 @@
     "source.fixAll.eslint": true
   },
   "editor.tabSize": 2,
-  "editor.fontSize": 21,
+  "editor.fontSize": 23,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
