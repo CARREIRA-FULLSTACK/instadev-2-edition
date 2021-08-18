@@ -1,6 +1,6 @@
 <template>
   <div class="full-width q-pb-xl">
-    <div class="column full-width" v-for="item in items" :key="item.id">
+    <div class="column full-width" v-for="item in posts" :key="item.id">
       <div class="row justify-between items-center full-width">
         <div class="row items-center">
           <q-avatar size="28px" class="q-mx-md">
@@ -60,9 +60,13 @@ export default {
       countClicks: 0,
       token: this.$store.getters['auth/getJWT'],
       postId: 0,
+      posts: this.items,
     };
   },
   watch: {
+    items() {
+      this.posts = this.items;
+    },
     async countClicks() {
       setTimeout(() => {
         if (this.countClicks !== 2) {
@@ -79,7 +83,7 @@ export default {
 
         await this.$store.dispatch('posts/addLikeInPost', { token: this.token, postId: this.postId });
 
-        this.postId = 0;
+        this.incrementPostLike();
         this.countClicks = 0;
       }
     },
@@ -88,6 +92,15 @@ export default {
     async addLikeInPost(postId) {
       this.countClicks += 1;
       this.postId = postId;
+    },
+    incrementPostLike() {
+      const localAllPosts = [...this.items];
+      const findPost = localAllPosts.find((item) => item.id === this.postId);
+
+      findPost.number_likes += 1;
+
+      this.posts = localAllPosts;
+      this.postId = 0;
     },
   },
 };
