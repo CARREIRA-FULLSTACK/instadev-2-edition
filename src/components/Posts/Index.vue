@@ -17,7 +17,7 @@
         class="q-mt-sm cursor-pointer"
         :src="item.image"
         :ratio="1"
-        @click="countClicks++"
+        @click="addLikeInPost(item.id)"
       >
       <q-icon
         v-if="animationClass !== ''"
@@ -58,10 +58,12 @@ export default {
     return {
       animationClass: '',
       countClicks: 0,
+      token: this.$store.getters['auth/getJWT'],
+      postId: 0,
     };
   },
   watch: {
-    countClicks() {
+    async countClicks() {
       setTimeout(() => {
         if (this.countClicks !== 2) {
           this.countClicks = 0;
@@ -69,17 +71,23 @@ export default {
       }, 1000);
 
       if (this.countClicks === 2) {
-        this.addLikeInPost();
+        this.animationClass = 'animate-like';
+
+        setTimeout(() => {
+          this.animationClass = '';
+        }, 600);
+
+        await this.$store.dispatch('posts/addLikeInPost', { token: this.token, postId: this.postId });
+
+        this.postId = 0;
         this.countClicks = 0;
       }
     },
   },
   methods: {
-    addLikeInPost() {
-      this.animationClass = 'animate-like';
-      setTimeout(() => {
-        this.animationClass = '';
-      }, 600);
+    async addLikeInPost(postId) {
+      this.countClicks += 1;
+      this.postId = postId;
     },
   },
 };

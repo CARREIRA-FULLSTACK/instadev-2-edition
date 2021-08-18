@@ -41,3 +41,23 @@ export async function listMyPosts(_, params) {
     return false;
   }
 }
+
+export async function addLikeInPost(_, params) {
+  const { token, postId } = params;
+
+  try {
+    await vm.$axios.put(`/posts/add-like/${postId}`, {}, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return true;
+  } catch (error) {
+    vm.$q.notify({
+      type: 'negative',
+      message: 'Falha ao efetuar o like!',
+      position: 'top',
+      icon: 'warning',
+    });
+    return false;
+  }
+}
