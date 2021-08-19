@@ -51,3 +51,25 @@ export async function updateUserProfile({ dispatch }, params) {
     return false;
   }
 }
+
+export async function deleteUserProfile(_, params) {
+  const { token } = params;
+
+  try {
+    await vm.$axios.delete('/user', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    return true;
+  } catch (error) {
+    vm.$q.notify({
+      type: 'negative',
+      message: 'Falha ao listar dados do usuário!',
+      position: 'top',
+      icon: 'warning',
+    });
+    return false;
+  }
+}

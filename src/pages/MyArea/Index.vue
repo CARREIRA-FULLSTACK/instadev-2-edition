@@ -57,6 +57,15 @@
         label="Edit Profile"
         @click="goTo('profile')"
       />
+      <q-btn
+        color="white"
+        flat
+        dense
+        class="btn-edit full-width q-mb-lg"
+        text-color="black"
+        label="Delete Profile"
+        @click="deleteUser()"
+      />
       <div class="row">
         <div class="column items-center q-mr-md">
           <q-avatar size="64px" class="avatar-story">
@@ -138,6 +147,18 @@ export default {
     },
     goTo(route) {
       this.$router.push({ path: route });
+    },
+    deleteUser() {
+      this.$q.dialog({
+        title: 'Excluir conta de usuário',
+        message: 'Essa é uma exclusão irreversível!',
+        cancel: true,
+      }).onOk(async () => {
+        this.$store.dispatch('user/deleteUserProfile', { token: this.token });
+        this.$router.push({ path: 'sign-in' });
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      });
     },
   },
   components: {
