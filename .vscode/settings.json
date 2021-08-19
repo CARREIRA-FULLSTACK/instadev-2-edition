@@ -13,5 +13,6 @@
     "vue",
     "html"
   ],
-  "vetur.experimental.templateInterpolationService": true
+  "vetur.experimental.templateInterpolationService": true,
+  "vetur.validation.interpolation": false,
 }
