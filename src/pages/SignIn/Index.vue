@@ -12,20 +12,20 @@
       />
       <q-form class="full-width" @submit="onSubmit">
 
-      <q-input filled v-model="credential" label="E-mail ou usuário" class="full-width q-mb-md" />
-      <q-input filled v-model="password" label="Password" type="password" class="full-width" />
+        <q-input filled v-model="credential" label="E-mail ou usuário" class="full-width q-mb-md" />
+        <q-input filled v-model="password" label="Password" type="password" class="full-width" />
 
-      <div class="column items-end full-width">
-        <a class="q-mt-md link" href="">Forgot password?</a>
-      </div>
+        <div class="column items-end full-width">
+          <a class="q-mt-md link" href="">Forgot password?</a>
+        </div>
 
-      <q-btn
-        type="submit"
-        color="primary"
-        :disable="!credential || !password"
-        label="Log in"
-        class="sign-in-button full-width q-mt-lg"
-      />
+        <q-btn
+          type="submit"
+          color="primary"
+          :disable="!credential || !password"
+          label="Log in"
+          class="sign-in-button full-width q-mt-lg"
+        />
       </q-form>
 
       <div class="flex full-width row items-center justify-center q-mt-xl">
@@ -43,7 +43,7 @@
         <span class="text-black-opacity">
           Don’t have an account?
         </span>
-        <a href="" class="link q-ml-xs">
+        <a href="#" @click="signUp" class="link q-ml-xs">
           Sign up.
         </a>
       </div>
@@ -80,6 +80,9 @@ export default {
     },
     async loadProfileData(token) {
       await this.$store.dispatch('user/getUserProfile', { token });
+    },
+    signUp() {
+      this.$router.push({ path: 'sign-up' });
     },
   },
 };
