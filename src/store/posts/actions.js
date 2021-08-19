@@ -61,3 +61,23 @@ export async function addLikeInPost(_, params) {
     return false;
   }
 }
+
+export async function deletePost(_, params) {
+  const { token, postId } = params;
+
+  try {
+    await vm.$axios.delete(`/posts/${postId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return true;
+  } catch (error) {
+    vm.$q.notify({
+      type: 'negative',
+      message: 'Falha excluir o Post!',
+      position: 'top',
+      icon: 'warning',
+    });
+    return false;
+  }
+}

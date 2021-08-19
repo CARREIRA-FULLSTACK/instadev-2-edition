@@ -11,7 +11,29 @@
             <span>Tokyo, Japan</span>
           </div>
         </div>
-        <q-icon class="q-mr-md" name="fas fa-ellipsis-h" size="15px" color="dark-items"></q-icon>
+        <q-icon
+          class="q-mr-md cursor-pointer"
+          name="fas fa-ellipsis-h"
+          size="15px"
+          color="dark-items">
+          <q-menu
+            anchor="top right"
+            self="top left">
+            <q-list style="min-width: 100px">
+              <q-item
+                clickable
+                @click="deletePost(item.id)"
+                v-close-popup
+                v-if="item.user.id === userData.id"
+              >
+                <q-item-section>Excluir post</q-item-section>
+              </q-item>
+              <q-item clickable v-close-popup v-else>
+                <q-item-section>Deixar de seguir</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-icon>
       </div>
       <q-img
         class="q-mt-sm cursor-pointer"
@@ -63,6 +85,11 @@ export default {
       posts: this.items,
     };
   },
+  computed: {
+    userData() {
+      return this.$store.getters['user/getUserData'];
+    },
+  },
   watch: {
     items() {
       this.posts = this.items;
@@ -101,6 +128,26 @@ export default {
 
       this.posts = localAllPosts;
       this.postId = 0;
+    },
+    deletePost(id) {
+      this.$q.dialog({
+        title: 'Excluir Post',
+        message: 'Confirma a exclusão do Post?',
+        cancel: true,
+        persistent: true,
+      }).onOk(async () => {
+        await this.$store.dispatch('posts/deletePost', { token: this.token, postId: id });
+
+        const localAllPosts = [...this.items];
+
+        const postIndex = localAllPosts.findIndex((item) => item.id === id);
+
+        localAllPosts.splice(postIndex, 1);
+
+        this.posts = localAllPosts;
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      });
     },
   },
 };
