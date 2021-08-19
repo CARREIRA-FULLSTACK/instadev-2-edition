@@ -2,6 +2,29 @@ import Vue from 'vue';
 
 const vm = new Vue({});
 
+export async function userRegister(_, params) {
+  try {
+    await vm.$axios.post('/user', params);
+
+    vm.$q.notify({
+      type: 'positive',
+      message: 'Usuário cadastrado com sucesso!',
+      position: 'top',
+      icon: 'warning',
+    });
+
+    return true;
+  } catch (error) {
+    vm.$q.notify({
+      type: 'negative',
+      message: 'Falha ao cadastrar usuário!',
+      position: 'top',
+      icon: 'warning',
+    });
+    return false;
+  }
+}
+
 export async function getUserProfile({ commit }, params) {
   const { token } = params;
 
