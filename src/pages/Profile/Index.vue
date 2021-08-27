@@ -9,7 +9,13 @@
       <q-avatar size="95px">
         <img :src="avatar">
       </q-avatar>
-      <q-btn flat color="primary" label="Change Profile Photo" />
+      <q-btn flat color="primary" label="Change Profile Photo" @click="upload" />
+      <q-file
+        ref="qfile"
+        v-model="file"
+        v-show="false"
+        :multiple="false" accept=".jpg, image/*"
+      />
     </div>
     <div class="full-width column q-px-sm">
       <div class="container-input row justify-center items-center">
@@ -65,23 +71,37 @@ export default {
       phone: '',
       gender: '',
       avatar: '',
+      file: [],
+      token: this.$store.getters['auth/getJWT'],
     };
+  },
+  watch: {
+    async file() {
+      const formData = new FormData();
+      formData.append('image', this.file);
+
+      const { url } = await this.$store.dispatch('upload/uploadFile', { token: this.token, formData });
+      this.avatar = url;
+    },
   },
   mounted() {
     this.loadProfileData();
   },
   methods: {
+    upload() {
+      this.$refs.qfile.$el.click();
+    },
     goTo(route) {
       this.$router.push({ path: route });
     },
     async updateUserData() {
-      const token = this.$store.getters['auth/getJWT'];
       const body = {
         name: this.name,
         bio: this.bio,
         gender: this.gender,
+        avatar: this.avatar,
       };
-      const response = await this.$store.dispatch('user/updateUserProfile', { token, body });
+      const response = await this.$store.dispatch('user/updateUserProfile', { token: this.token, body });
 
       if (response) {
         this.$router.push({ path: 'my-area' });

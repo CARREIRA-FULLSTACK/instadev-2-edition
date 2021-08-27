@@ -21,7 +21,7 @@
       </div>
       <div class="row items-center justify-between full-width q-mt-lg">
         <q-avatar size="96px" class="avatar-profile">
-          <img class="avatar" :src="user.avatar || 'https://static.wikia.nocookie.net/caramella-girls/images/9/99/Blankpfp.png/revision/latest?cb=20190122015011'">
+          <img class="avatar" :src="user.avatar || 'https://static.wikia.nocookie.net/caramella-girls/images/9/99/Blankpfp.png'">
         </q-avatar>
         <div class="column items-center">
           <strong>{{posts.length}}</strong>
