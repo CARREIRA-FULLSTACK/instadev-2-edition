@@ -5,7 +5,7 @@
     "source.fixAll.eslint": true
   },
   "editor.tabSize": 2,
-  "editor.fontSize": 21,
+  "editor.fontSize": 20,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -13,5 +13,6 @@
     "vue",
     "html"
   ],
-  "vetur.experimental.templateInterpolationService": true
+  "vetur.experimental.templateInterpolationService": true,
+  "vetur.validation.interpolation": false,
 }

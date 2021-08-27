@@ -14,7 +14,6 @@ module.exports = function (ctx) {
     supportTS: false,
 
     boot: [
-
       'axios',
     ],
 
@@ -76,7 +75,7 @@ module.exports = function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Dialog'],
     },
 
     animations: [],

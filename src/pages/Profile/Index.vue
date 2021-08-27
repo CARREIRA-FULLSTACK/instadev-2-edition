@@ -1,32 +1,32 @@
 <template>
   <q-page class="flex">
     <div class="full-width row items-center justify-between bg-grey-2">
-      <q-btn flat color="grey-9" label="Cancel" />
+      <q-btn flat color="grey-9" label="Cancel" @click="goTo('my-area')" />
       <strong>Edit Profile</strong>
-      <q-btn flat color="primary" label="Done" />
+      <q-btn flat color="primary" label="Done" @click="updateUserData" />
     </div>
     <div class="full-width column items-center justify-center">
       <q-avatar size="95px">
-        <img src="https://cdn.quasar.dev/img/avatar.png">
+        <img :src="avatar">
       </q-avatar>
       <q-btn flat color="primary" label="Change Profile Photo" />
     </div>
     <div class="full-width column q-px-sm">
       <div class="container-input row justify-center items-center">
         <span>Name</span>
-        <q-input v-model="text" placeholder="name" />
+        <q-input v-model="name" placeholder="name" />
       </div>
       <div class="container-input row justify-center items-center">
         <span>Username</span>
-        <q-input v-model="text" placeholder="username" />
+        <q-input v-model="userName" placeholder="username" disable />
       </div>
       <div class="container-input row justify-center items-center">
         <span>Website</span>
-        <q-input v-model="text" placeholder="website" />
+        <q-input v-model="webSite" placeholder="website" />
       </div>
       <div class="container-input row justify-center items-center">
         <span>Bio</span>
-        <q-input v-model="text" autogrow placeholder="bio" />
+        <q-input v-model="bio" autogrow placeholder="bio" />
       </div>
     </div>
      <div class="full-width column items-start q-px-sm">
@@ -36,15 +36,15 @@
       <div class="full-width">
         <div class="container-input row justify-center items-center">
           <span>Email</span>
-          <q-input v-model="text" placeholder="email" />
+          <q-input v-model="email" placeholder="email" disable />
         </div>
         <div class="container-input row justify-center items-center">
           <span>Phone</span>
-          <q-input v-model="text" placeholder="cellphone" />
+          <q-input v-model="phone" placeholder="cellphone" />
         </div>
         <div class="container-input row justify-center items-center">
           <span>Gender</span>
-          <q-input v-model="text" placeholder="gender" />
+          <q-input v-model="gender" placeholder="gender" />
         </div>
       </div>
     </div>
@@ -57,8 +57,46 @@ export default {
   name: 'ProfilePage',
   data() {
     return {
-      text: '',
+      name: '',
+      userName: '',
+      webSite: '',
+      bio: '',
+      email: '',
+      phone: '',
+      gender: '',
+      avatar: '',
     };
+  },
+  mounted() {
+    this.loadProfileData();
+  },
+  methods: {
+    goTo(route) {
+      this.$router.push({ path: route });
+    },
+    async updateUserData() {
+      const token = this.$store.getters['auth/getJWT'];
+      const body = {
+        name: this.name,
+        bio: this.bio,
+        gender: this.gender,
+      };
+      const response = await this.$store.dispatch('user/updateUserProfile', { token, body });
+
+      if (response) {
+        this.$router.push({ path: 'my-area' });
+      }
+    },
+    loadProfileData() {
+      const userData = this.$store.getters['user/getUserData'];
+
+      this.name = userData.name;
+      this.userName = userData.user_name;
+      this.bio = userData.bio;
+      this.email = userData.email;
+      this.gender = userData.gender;
+      this.avatar = userData.avatar;
+    },
   },
 };
 </script>
